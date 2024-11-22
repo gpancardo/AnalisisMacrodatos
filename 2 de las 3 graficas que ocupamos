@@ -1,0 +1,50 @@
+DOS DE LAS 3 GRAFICAS QUE NECESITAREMOS 
+
+
+1. Accidentes por día de la semana
+
+import matplotlib.pyplot as plt
+
+# Consulta SQL
+sqlstr = """
+SELECT DIA_SEMANA, COUNT(*) AS nr
+FROM accidentes
+GROUP BY DIA_SEMANA
+ORDER BY DIA_SEMANA;
+"""
+
+# Ejecutar la consulta y graficar
+df = spark.sql(sqlstr).toPandas()
+
+plt.figure(figsize=(10, 6))
+dias = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo']
+plt.bar(dias, df['nr'], color='teal')
+plt.xlabel('Día de la Semana')
+plt.ylabel('Número de Accidentes')
+plt.title('Accidentes por Día de la Semana')
+plt.show()
+
+
+
+
+
+2. Accidentes por tipo de vehículo
+import matplotlib.pyplot as plt
+
+# Consulta SQL
+sqlstr = """
+SELECT TIPO_VEHICULO, COUNT(*) AS nr
+FROM accidentes
+GROUP BY TIPO_VEHICULO
+ORDER BY nr DESC;
+"""
+
+# Ejecutar la consulta y graficar
+df = spark.sql(sqlstr).toPandas()
+
+plt.figure(figsize=(12, 8))
+plt.barh(df['TIPO_VEHICULO'], df['nr'], color='coral')
+plt.xlabel('Número de Accidentes')
+plt.ylabel('Tipo de Vehículo')
+plt.title('Accidentes por Tipo de Vehículo')
+plt.show()
